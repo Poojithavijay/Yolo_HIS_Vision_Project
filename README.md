@@ -1,5 +1,7 @@
-#Download Yolo v3 output videos & model weight from below link. (I can't copy them to github because of size restrictions!)
-#Link: https://drive.google.com/drive/folders/1jFs9NSD_kiRR7wzLuC6o-IzBjzq9h0jW?usp=sharing
+Download Yolo v3 output videos & model weight from below link. (I can't copy them to github because of size restrictions!)
+
+Link: https://drive.google.com/drive/folders/1jFs9NSD_kiRR7wzLuC6o-IzBjzq9h0jW?usp=sharing
+
 #Code Changes:
 
 1. Changed the input method from argparse
