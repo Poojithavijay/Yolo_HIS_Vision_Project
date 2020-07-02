@@ -142,7 +142,7 @@ while True:
 			freq = str(freq)[1:-1]
 			text1 = "{}".format(freq)
 			cv2.putText(frame, text1, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (209, 80, 0, 255), 2)
-			cv2.putText(frame,"IN: ",(375, 355),cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0xFF), 2)
+			cv2.putText(frame,"IN: ",(363, 355),cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0xFF), 2)
 			cv2.putText(frame, "OUT: ", (850, 355), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0xFF), 2)
 			#var1 = var1 + 1 if y > 350 else var1
 			
@@ -173,42 +173,45 @@ while True:
 				cv2.putText(frame,text2,(975, 350),cv2.FONT_HERSHEY_SIMPLEX,0.6,(0, 0, 0xFF),2)
 			"""
 			var = 1
-			if (x > 400 and x < 620 and y > 360 and y < 362.5):
 			
+			#Detect Vehicles in Lane 1 (IN)
+			if (x > 400 and x < 620 and y > 360 and y < 362.5):
+				cv2.line(frame, (415, 361), (615, 361), (0, 0xFF, 0), 7)
 				f = open("D:\yolo-object-detection\In.txt", "a")
 				f.write("%d\n" %var)
-				print("Dump Val:{}".format(var))
+				print("IN Dump Val:{}".format(var))
 				f.close()
 				#f = open(r"D:\yolo-object-detection\iter.txt", "r")
 				#var1 = f.read()
 				var1 = sum([int(s.strip()) for s in open("D:\yolo-object-detection\In.txt", "r").readlines()])
-				print("Read Val:{}".format(var1))
+				print("IN Read Val:{}".format(var1))
 				text2 = "{}".format(var1)
-				cv2.putText(frame,text2,(402, 355),cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0xFF), 2)
+				cv2.putText(frame,text2,(390, 355),cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0xFF), 2)
 				f.close()
 
 			else:
 				try:
 					var1 = sum([int(s.strip()) for s in open("D:\yolo-object-detection\In.txt", "r").readlines()])
 					text2 = "{}".format(var1)
-					cv2.putText(frame,text2,(402, 355),cv2.FONT_HERSHEY_SIMPLEX,0.6,(0, 0, 0xFF), 2)
+					cv2.putText(frame,text2,(390, 355),cv2.FONT_HERSHEY_SIMPLEX,0.6,(0, 0, 0xFF), 2)
 					f.close()
 				except:
 					var1 = 0
 					text2 = "{}".format(var1)
-					cv2.putText(frame,text2,(402, 355),cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0xFF), 2)
+					cv2.putText(frame,text2,(390, 355),cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0xFF), 2)
 
 			
+			#Detect Vehicles in Lane 2 (OUT)
 			if (x > 670 and x < 845 and y > 360 and y < 362.5):
-
+				cv2.line(frame, (670, 361), (843, 361), (0, 0xFF, 0), 7)
 				f = open("D:\yolo-object-detection\Out.txt", "a")
 				f.write("%d\n" %var)
-				print("Dump Val:{}".format(var))
+				print("OUT Dump Val:{}".format(var))
 				f.close()
 				#f = open(r"D:\yolo-object-detection\iter.txt", "r")
 				#var1 = f.read()
 				var1 = sum([int(s.strip()) for s in open("D:\yolo-object-detection\Out.txt", "r").readlines()])
-				print("Read Val:{}".format(var1))
+				print("OUT Read Val:{}".format(var1))
 				text2 = "{}".format(var1)
 				cv2.putText(frame,text2,(895, 355),cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0xFF), 2)
 				f.close()
