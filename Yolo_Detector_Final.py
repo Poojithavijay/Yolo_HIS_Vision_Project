@@ -7,9 +7,25 @@ import os
 from collections import Counter
 
 
+ap = argparse.ArgumentParser()
+ap.add_argument("-input", "--input", required=True,
+	help="path to input video")
+ap.add_argument("-output", "--output", required=True,
+	help="path to output video")
+ap.add_argument("-config", "--yolo", required=True,
+	help="base path to YOLO directory")
+args = vars(ap.parse_args())
+"""
+ap.add_argument("-c", "--confidence", type=float, default=0.5,
+	help="minimum probability to filter weak detections")
+ap.add_argument("-t", "--threshold", type=float, default=0.3,
+	help="threshold when applyong non-maxima suppression")
+"""
+
+
 # load the COCO class labels our YOLO model was trained on
-labelsPath = r"D:\yolo-object-detection\yolo-coco\coco.names"
-#labelsPath = os.path.sep.join([args["yolo"], "coco.names"])
+labelsPath = os.path.sep.join([args["yolo"], "coco.names"])
+#labelsPath = r"D:\yolo-object-detection\yolo-coco\coco.names"
 LABELS = open(labelsPath).read().strip().split("\n")
 
 # initialize a list of colors to represent each possible class label
@@ -17,10 +33,14 @@ np.random.seed(42)
 COLORS = np.random.randint(0, 255, size=(len(LABELS), 3), dtype="uint8")
 
 # derive the paths to the YOLO weights and model configuration
+weightsPath = os.path.sep.join([args["yolo"], "yolov3.weights"])
+configPath = os.path.sep.join([args["yolo"], "yolov3.cfg"])
+"""
 weightsPath = r"D:\yolo-object-detection\yolo-coco\yolov3.weights"
 print("Weights Loaded")
 configPath = r"D:\yolo-object-detection\yolo-coco\yolov3.cfg"
 print("Model Config Loaded")
+"""
 
 # load our YOLO object detector trained on COCO dataset (80 classes)
 # and determine only the *output* layer names that we need from YOLO
@@ -29,9 +49,9 @@ net = cv2.dnn.readNetFromDarknet(configPath, weightsPath)
 ln = net.getLayerNames()
 ln = [ln[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 
-# initialize the video stream, pointer to output video file, and
-# frame dimensions
-vs = cv2.VideoCapture(r"D:\yolo-object-detection\videos\overpass.mp4") 
+# initialize the video stream, pointer to output video file, and frame dimensions
+#vs = cv2.VideoCapture(r"D:\yolo-object-detection\videos\overpass.mp4") 
+vs = cv2.VideoCapture(args["input"])
 writer = None
 (W, H) = (None, None)
 
@@ -140,7 +160,7 @@ while True:
 			freq = dict([LABELS[x], classIDs.count(x)] for x in set(classIDs))
 			print("Class:", freq, freq1)
 			freq = str(freq)[1:-1]
-			text1 = "{}".format(freq)
+			text1 = ("Overall Vehicles in Frame = {}".format(freq))
 			cv2.putText(frame, text1, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (209, 80, 0, 255), 2)
 			cv2.putText(frame,"IN: ",(363, 355),cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0xFF), 2)
 			cv2.putText(frame, "OUT: ", (850, 355), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0xFF), 2)
@@ -235,7 +255,8 @@ while True:
 	if writer is None:
 		# initialize our video writer
 		fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-		writer = cv2.VideoWriter(r"D:\yolo-object-detection\output\Test.avi", fourcc, 30, (frame.shape[1], frame.shape[0]), True)
+		#writer = cv2.VideoWriter(r"D:\yolo-object-detection\output\Test.avi", fourcc, 30, (frame.shape[1], frame.shape[0]), True)
+		writer = cv2.VideoWriter(args["output"], fourcc, 30, (frame.shape[1], frame.shape[0]), True)
 
 		# some information on processing single frame
 		if total > 0:
@@ -246,6 +267,13 @@ while True:
 
 	# write the output frame to disk
 	writer.write(frame)
+
+#Delete unnecessary log files generated
+if os.path.exists("D:\yolo-object-detection\In.txt"):
+	os.remove("D:\yolo-object-detection\In.txt")
+
+if os.path.exists("D:\yolo-object-detection\Out.txt"):
+	os.remove("D:\yolo-object-detection\Out.txt")
 
 # release the file pointers
 print("[INFO] cleaning up...")
