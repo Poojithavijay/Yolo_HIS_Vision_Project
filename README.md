@@ -71,6 +71,5 @@
 2. Exploit pre-trained YOLO models from TensorFlow/PyTorch instead of OpenCV.
 3. Rather than downloading OpenCV binaries from PIP/APT, compile OpenCV source code manually to enable CUDA backend.
 
-![Alt text](videos/img.PNG?raw=true "Snapshot of a single frame in Object Detector’s Output")
 
 **Author: Poojitha Vijayanarasimha (1293146)**
