@@ -72,4 +72,4 @@
 3. Rather than downloading OpenCV binaries from PIP/APT, compile OpenCV source code manually to enable CUDA backend.
 
 
-**Author: Poojitha Vijayanarasimha (1293146)**
+**Author: Poojitha Vijayanarasimha **
